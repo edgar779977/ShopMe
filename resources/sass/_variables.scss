@@ -1,0 +1,27 @@
+
+body {
+    font-family: "Lato", sans-serif;
+}
+
+.flex-grow-1 {
+    /* Ensure main content area fills remaining space */
+    flex-grow: 1;
+}
+
+.admin-route-container {
+    display: flex;
+    margin: 4rem 1rem; /* Adjust margins as needed */
+}
+
+.admin-content {
+    flex: 1;
+    transition: margin 0.5s ease;
+}
+
+.admin-content.expanded {
+    margin-left: 200px; /* Adjust sidebar width */
+}
+
+.admin-content.collapsed {
+    margin-left: 0;
+}

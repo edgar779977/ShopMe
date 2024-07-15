@@ -1,0 +1,73 @@
+// Sidebar.module.scss
+
+
+
+/* Example of media query for responsive design */
+@media (max-width: 768px) {
+    .admin-route-container {
+        flex-direction: column;
+    }
+
+    .admin-content.expanded {
+        margin-left: 0; /* Adjust for smaller screens */
+    }
+}
+
+.offcanvas {
+    width: 250px;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #fff; /* Set your background color */
+    z-index: 1000; /* Adjust as per your layout */
+}
+
+.offcanvas.show {
+    transform: translateX(0);
+}
+
+.offcanvasHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333; /* Header background color */
+    color: #fff; /* Header text color */
+    padding: 10px 20px;
+}
+
+.offcanvasTitle {
+    margin: 0;
+}
+
+.offcanvasBody {
+    padding: 10px;
+}
+
+.navLink {
+    display: block;
+    padding: 10px;
+    color: #000; /* Nav link text color */
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.navLink.active {
+    background-color: #007bff; /* Active link background color */
+    color: #fff; /* Active link text color */
+}
+
+.sidebarToggle {
+    margin-top: 1rem;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+}
+
+.closeButton {
+    color: gray;
+    font-size: 35px;
+}

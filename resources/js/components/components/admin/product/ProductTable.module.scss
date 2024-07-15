@@ -1,0 +1,30 @@
+.main-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+}
+
+.sub-categories-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.category-row {
+    cursor: pointer;
+    &:hover {
+        background-color: #f0f0f0;
+    }
+}
+
+.sub-categories-row {
+    td {
+        padding: 10px; /* Adjust as needed */
+        border: 1px solid #ccc;
+        background-color: #76b7758c;
+    }
+}
