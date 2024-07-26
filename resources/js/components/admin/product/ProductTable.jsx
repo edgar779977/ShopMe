@@ -16,6 +16,7 @@ const ProductTable = () => {
         // Update categories state when categoriesData changes
         if (categoriesData.category) {
             setCategories(categoriesData.category);
+
         }
     }, [categoriesData]);
 
