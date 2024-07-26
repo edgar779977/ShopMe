@@ -28,3 +28,17 @@
         background-color: #76b7758c;
     }
 }
+
+.button-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    background-color: #f3f3f3;
+}

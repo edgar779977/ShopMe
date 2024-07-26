@@ -1,12 +1,14 @@
 // src/helpers/helpers.js
 import axios from 'axios';
 
-const USERS_API_URL = '/api/users'; // Replace with your users API URL
-const CARS_API_URL = 'https://api.example.com/cars'; // Replace with your cars API URL
+const USERS_API_URL = '/api/admin/users';
+const DELETE_USERS_API_URL = '/api/admin/users/';
+const ADMIN_LOGOUT = '/api/logout/';
+
+
+const token = localStorage.getItem('token')
 
 const getAllUsers = async () => {
-
-    const token = localStorage.getItem('token')
 
     try {
         const response = await axios.get(USERS_API_URL,{
@@ -14,7 +16,36 @@ const getAllUsers = async () => {
                 'Content-Type': 'application/json',
                 'Authorization':`Bearer ${token}`
             },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        throw error;
+    }
+};
 
+const deleteUsers = async (userId) => {
+    try {
+        const response = await axios.delete(DELETE_USERS_API_URL + userId,{
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization':`Bearer ${token}`
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        throw error;
+    }
+};
+
+const logout = async () => {
+    try {
+        const response = await axios.post(ADMIN_LOGOUT ,{
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization':`Bearer ${token}`
+            },
         });
         return response.data;
     } catch (error) {
@@ -26,4 +57,6 @@ const getAllUsers = async () => {
 
 export const UserHelper = {
     getAllUsers,
+    deleteUsers,
+    logout
 };

@@ -1,14 +1,13 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {loginUser} from '../../../store/slices/authSlice';
+import {loginUser} from '../../store/slices/authSlice';
 import {Formik, Field, ErrorMessage} from 'formik';
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './Login.module.scss';
 
 const Login = () => {
     const dispatch = useDispatch();
-    const location = useLocation()
     const {user,loading, error} = useSelector((state) => state.auth);
     const navigate = useNavigate()
 

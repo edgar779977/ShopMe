@@ -6,7 +6,6 @@ const Sidebar = ({isOpen, toggleSidebar}) => {
     const routes = [
         {path: 'users', label: 'Users'},
         {path: 'product', label: 'Product'}
-        // Add more routes as needed
     ];
 
     return (

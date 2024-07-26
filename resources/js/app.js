@@ -5,6 +5,8 @@
  */
 
 import './bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Ensure you import the JS file
 
 /**
  * Next, we will create a fresh React component instance and attach it to

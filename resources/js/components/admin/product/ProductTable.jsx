@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCategory } from '../../../../store/slices/category';
+import { fetchCategory } from '../../../store/slices/category';
 import style from './ProductTable.module.scss';
 
 const ProductTable = () => {

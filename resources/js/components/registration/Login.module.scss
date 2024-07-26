@@ -71,3 +71,25 @@
     font-size: 0.875rem;
     margin-top: 0.25rem;
 }
+
+.noHover {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    &:hover,
+    &:focus,
+    &:active {
+        border: none;
+        outline: none;
+        box-shadow: none;
+    }
+}
+
+.inputGroup > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+    margin-left: calc(var(--bs-border-width) * -49) !important;
+    z-index: 1000;
+    /* border-top-left-radius: 0; */
+    border-bottom-left-radius: 0;
+}
+
