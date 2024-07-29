@@ -2,12 +2,12 @@
 
 import React, {Suspense, lazy} from 'react';
 import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
-import AdminRoute from './AdminRoute';
-const Users = lazy(() => import('../admin/Users'));
-const ProductTable = lazy(() => import('../admin/product/ProductTable'));
-const Home = lazy(() => import('./Home'));
-const NotFound404 = lazy(() => import('../pages/NotFound'));
-const Login = lazy(() => import('../registration/Login'));
+import AdminRoute from './components/AdminRoute';
+const Users = lazy(() => import('./admin/Users'));
+const ProductTable = lazy(() => import('./admin/Product'));
+const Home = lazy(() => import('./components/Home'));
+const NotFound404 = lazy(() => import('./pages/NotFound'));
+const Login = lazy(() => import('./registration/Login'));
 
 const App = () => {
     return (
