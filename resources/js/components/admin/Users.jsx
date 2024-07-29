@@ -62,7 +62,7 @@ const Users = () => {
     ];
 
     const renderRowActions = user => (
-        <div>
+        <div style={{display: "flex", justifyContent: 'space-between'}}>
             <button style={{border: "none", backgroundColor: 'white'}} onClick={() => handleEditUser(user.id)}>
                 <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 32 32" height="24"
                      viewBox="0 0 32 32" width="24">
@@ -117,6 +117,7 @@ const Users = () => {
     return (
         <>
             <button
+                style={{position: "fixed", right: '13%',  bottom: '90%'}}
                 type="button"
                 className="btn btn-success mb-1 float-end"
                 onClick={() => setShowModal(true)}
