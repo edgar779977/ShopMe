@@ -1,9 +1,12 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { format } from 'date-fns';
-import { UserHelper } from '../../../helpers/UserHelper';
+import React, {useEffect, useState, useCallback, useMemo} from 'react';
+import {format} from 'date-fns';
+import {UserHelper} from '../../../helpers/UserHelper';
 import CreateUserModal from '../modals/CreateUserModal';
 import defaultImage from '../../../../public/images/profile-image.png';
 import Table from '../../components/components/table/Table'; // Ensure this path is correct
+import DeleteIcon from '../../../../public/images/icon/delete.svg';
+import EditIcon from '../../../../public/images/icon/edit.svg';
+
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -49,17 +52,26 @@ const Users = () => {
     };
 
     const columns = [
-        { key: 'id', label: 'ID' },
-        { key: 'avatar', label: 'Avatar', render: user => <img src={user.avatar ? user.avatar : defaultImage } alt={`${user.name}'s avatar`} style={{ width: 50, height: 50 }} /> },
-        { key: 'name', label: 'Name' },
-        { key: 'created_at', label: 'Created At', render: user => formatDate(user.created_at) },
-        { key: 'updated_at', label: 'Updated At', render: user => formatDate(user.updated_at) },
+        {key: 'id', label: 'ID'},
+        {
+            key: 'avatar',
+            label: 'Avatar',
+            render: user => <img src={user.avatar ? user.avatar : defaultImage} alt={`${user.name}'s avatar`}
+                                 style={{width: 50, height: 50, borderRadius: '25px'}}/>
+        },
+        {key: 'name', label: 'Name'},
+        {key: 'created_at', label: 'Created At', render: user => formatDate(user.created_at)},
+        {key: 'updated_at', label: 'Updated At', render: user => formatDate(user.updated_at)},
     ];
 
     const renderRowActions = user => (
-        <div>
-            <button onClick={() => handleEditUser(user.id)}>Edit</button>
-            <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
+        <div style={{display: "flex", justifyContent: 'space-between'}}>
+            <button style={{border: "none", backgroundColor: 'white'}} onClick={() => handleEditUser(user.id)}>
+                <img src={DeleteIcon} alt="delete"/>
+            </button>
+            <button style={{border: "none", backgroundColor: 'white'}} onClick={() => handleDeleteUser(user.id)}>
+                <img src={EditIcon} alt="edit"/>
+            </button>
         </div>
     );
 
@@ -69,6 +81,7 @@ const Users = () => {
     return (
         <>
             <button
+                style={{position: "fixed", right: '13%', bottom: '90%'}}
                 type="button"
                 className="btn btn-success mb-1 float-end"
                 onClick={() => setShowModal(true)}

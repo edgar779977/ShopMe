@@ -5,7 +5,7 @@ import style from './Table.module.scss';
 const Table = ({ columns, data, renderRowActions = null, expandedCategoryId, handleCategoryClick = null, subCategoriesKey = null }) => {
     return (
         <table className={`table ${style.table}`}>
-            <thead>
+            <thead  style={{textAlign: 'center'}}>
             <tr>
                 {columns.map(column => (
                     <th key={column.key}>{column.label}</th>
