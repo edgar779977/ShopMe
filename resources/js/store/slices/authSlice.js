@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const initialState = {
     user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
+    isAdmin: localStorage.getItem('isAdmin') ? JSON.parse(localStorage.getItem('isAdmin')) : null,
     isAuthenticated: localStorage.getItem('user') ? true : false,
     loading: false,
     error: null,
@@ -16,10 +17,13 @@ export const loginUser = createAsyncThunk(
     async ({email, password}, {rejectWithValue}) => {
         try {
             const response = await axios.post('/api/login', {email, password});
-            const user = response.data;
-            localStorage.setItem('user', JSON.stringify(user));
-            localStorage.setItem('token', user.token); // Store token if applicable
-            return user;
+            const data = response.data;
+            if (data.token && data.user){
+                localStorage.setItem('user', JSON.stringify(data.user));
+                localStorage.setItem('token', data.token); // Store token if applicable
+                localStorage.setItem('isAdmin', data.isAdmin); // Store token if applicable
+            }
+            return data;
         } catch (error) {
             return rejectWithValue(error.response.data);
         }
@@ -67,7 +71,7 @@ export const logoutUser = createAsyncThunk(
     'auth/logoutUser',
     async (_, {rejectWithValue}) => {
         try {
-            await axios.post('/api/admin/logout', {}, {
+            await axios.post('/api/logout', {}, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -76,6 +80,7 @@ export const logoutUser = createAsyncThunk(
             // Clear localStorage
             localStorage.removeItem('user');
             localStorage.removeItem('token');
+            localStorage.removeItem('isAdmin');
 
             return {}; // Return empty object or any relevant data if needed
         } catch (error) {
@@ -114,7 +119,8 @@ const authSlice = createSlice({
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.loading = false;
-                state.user = action.payload;
+                state.user = action.payload.user;
+                state.token = action.payload.token;
                 state.isAuthenticated = true;
                 state.error = null;
             })

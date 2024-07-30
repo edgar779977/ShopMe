@@ -64,9 +64,9 @@ const Users = () => {
     const renderRowActions = user => (
         <div>
             <button style={{border: "none", backgroundColor: 'white'}} onClick={() => handleEditUser(user.id)}>
-                <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 32 32" height="24"
+                <svg xmlns="http://www.w3.org/2000/svg" height="24"
                      viewBox="0 0 32 32" width="24">
-                    <g fill="green" fill-rule="nonzero">
+                    <g fill="green" >
                     <path d="m2 26h28v2h-28z"/>
                     <path
                         d="m25.4 9c.8-.8.8-2 0-2.8l-3.6-3.6c-.8-.8-2-.8-2.8 0l-15 15v6.4h6.4zm-5-5 3.6 3.6-3 3-3.6-3.6zm-14.4 18v-3.6l10-10 3.6 3.6-10 10z"/>
@@ -76,7 +76,7 @@ const Users = () => {
             </button>
             <button style={{border: "none", backgroundColor: 'white'}} onClick={() => handleDeleteUser(user.id)}>
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                    <g fill="red" fill-rule="nonzero">
+                    <g fill="red">
                         <path
                             d="m9.5 0c.27614237 0 .5.22385763.5.5 0 .27614238-.22385763.5-.5.5-.55228475 0-1 .44771525-1 1 0 .27614237-.22385763.5-.5.5s-.5-.22385763-.5-.5c0-1.1045695.8954305-2 2-2z"/>
                         <path

@@ -7,18 +7,20 @@ import { useDispatch } from 'react-redux';
 import { logoutUser } from '../../store/slices/authSlice';
 
 const AdminRoute = ({children}) => {
-    const {isAuthenticated, user} = useSelector((state) => state.auth);
+    const {isAuthenticated, user,isAdmin} = useSelector((state) => state.auth);
     const [isOpen, setIsOpen] = useState(false);
     const {isMobile} = useContext(IsMobileContext);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     useEffect(() => {
+
         if (!isAuthenticated) {
             navigate('/login');
-        } else if (isAuthenticated && !user?.isAdmin) {
+        } else if (isAuthenticated && !isAdmin) {
             navigate('/');
         }
+
     }, [isAuthenticated, user, navigate]);
 
     const toggleSidebar = () => {
@@ -29,10 +31,8 @@ const AdminRoute = ({children}) => {
         dispatch(logoutUser());
     };
 
-
-
     return (
-        isAuthenticated && user?.isAdmin ? (
+        isAuthenticated && isAdmin ? (
             <>
                 <div className={`m-4 gap-4 d-flex ${!isMobile ? 'justify-content-between admin-route-container' : 'flex-column'}`}>
                     <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} isMobile={isMobile}/>

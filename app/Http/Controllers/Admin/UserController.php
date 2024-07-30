@@ -47,7 +47,6 @@ class UserController extends Controller
         }
     }
 
-
     /**
      * Store a newly created resource in storage.
      */
@@ -56,8 +55,12 @@ class UserController extends Controller
         $data = $request->only(['name', 'email', 'password']);
         $result = $this->userServices->createUser($data);
 
-        return response()->json($result, $result['success'] ? 201 : 500);
+        return response()->json([
+            'success' => 1,
+            'message' => 'the user has been successfully created',
+            'user' => $result,
 
+        ],200);
     }
 
     /**

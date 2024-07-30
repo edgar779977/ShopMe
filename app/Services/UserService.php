@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Jobs\SendWelcomeEmailJob;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
@@ -33,7 +34,7 @@ class UserService
         // Send welcome email
         SendWelcomeEmailJob::dispatch($user);
 
-        return ['success' => 1, 'message' => 'The user has been successfully created and email sent'];
+        return $user;
     }
 
     public function uploadProfileImage($userId, $imagePath)
@@ -41,5 +42,9 @@ class UserService
         return $this->userRepository->uploadProfileImage($userId, $imagePath);
     }
 
+    public function login(array $user)
+    {
 
+        return $this->userRepository->login($user);
+    }
 }
