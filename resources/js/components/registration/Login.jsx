@@ -1,28 +1,29 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginUser} from '../../store/slices/authSlice';
 import {Formik, Field, ErrorMessage} from 'formik';
-import {useNavigate} from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './Login.module.scss';
 
 const Login = () => {
+
+    const from = location.state?.from || '/';
     const dispatch = useDispatch();
-    const {user,loading, error} = useSelector((state) => state.auth);
+    const {token,user,loading, error} = useSelector((state) => state.auth);
     const navigate = useNavigate()
 
     useEffect(() => {
 
-        if (user && !user.isAdmin) {
-            navigate('/')
+        if ((token && user) && !user.isAdmin) {
+            navigate(from)
         }
 
-        if (user?.isAdmin){
-            navigate('/admin/dashboard')
+        if (user?.isAdmin && token) {
+            navigate(from)
         }
 
-
-    }, [user])
+    }, [user,token])
 
     const validate = values => {
         const errors = {};
@@ -37,10 +38,10 @@ const Login = () => {
 
     const handleSubmit = async (values) => {
         try {
-            const user = await dispatch(loginUser({email: values.email, password: values.password}));
-            if (user.payload.user.email === 'asdasdasdasd@gmail.com') {
-                console.log(11111)
-                navigate('/admin/dashboard')
+            const data = await dispatch(loginUser({email: values.email, password: values.password}));
+
+            if (data.user && data.token){
+                navigate(from)
             }
         } catch (error) {
             console.error('Login failed:', error);

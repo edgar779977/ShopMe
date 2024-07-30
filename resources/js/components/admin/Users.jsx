@@ -1,20 +1,16 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { format } from 'date-fns'; // Import format function from date-fns
-import style from './product/ProductTable.module.scss';
-import { UserHelper } from '../../../helpers/UserHelper';
+import React, {useEffect, useState, useCallback, useMemo} from 'react';
+import {format} from 'date-fns';
+import {UserHelper} from '../../../helpers/UserHelper';
 import CreateUserModal from '../modals/CreateUserModal';
 import defaultImage from '../../../../public/images/profile-image.png';
-
-// Path to default avatar image
-const DEFAULT_AVATAR_URL = '/images/default-avatar.png';
+import Table from '../../components/components/table/Table'; // Ensure this path is correct
 
 const Users = () => {
     const [users, setUsers] = useState([]);
     const [newUser, setNewUser] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [expandedUserId, setExpandedUserId] = useState(null);
-    const [showModal, setShowModal] = useState(false); // State for managing modal visibility
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         fetchData();
@@ -37,71 +33,83 @@ const Users = () => {
         }
     };
 
-    const handleUserClick = useCallback((userId) => {
-        setExpandedUserId(prevId => prevId === userId ? null : userId);
-    }, []);
-
-    const handleEditUser = useCallback((userId) => {
-        // Implement your edit logic here, e.g., navigate to edit page
-        console.log(`Editing user with ID: ${userId}`);
-    }, []);
-
-    const handleDeleteUser = useCallback(async (userId) => {
-        try {
-            await UserHelper.deleteUsers(userId);
-            console.log('Deleted user ID:', userId);
-            setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
-        } catch (err) {
-            console.error('Error deleting user:', err);
-            setError(err);
-        }
-    }, []);
-
     const handleSaveUser = useCallback((newUser) => {
         setNewUser(true);
         setUsers(prevUsers => [...prevUsers, newUser]);
-        setShowModal(false); // Close modal after save
+        setShowModal(false);
     }, []);
 
-    const renderTableRows = useMemo(() => {
-        if (!Array.isArray(users)) {
-            console.error('Users data is not an array:', users);
-            return null;
+    const formatDate = (dateString) => {
+        try {
+            return format(new Date(dateString), 'yyyy-MM-dd HH:mm:ss');
+        } catch (error) {
+            console.error('Invalid date:', dateString);
+            return 'Invalid date';
         }
+    };
 
-        return users.map((user, index) => {
-            const createdAt = new Date(user.created_at);
-            const updatedAt = new Date(user.updated_at);
+    const columns = [
+        {key: 'id', label: 'ID'},
+        {
+            key: 'avatar',
+            label: 'Avatar',
+            render: user => <img src={user.avatar ? user.avatar : defaultImage} alt={`${user.name}'s avatar`}
+                                 style={{width: 50, height: 50, borderRadius: '25px'}}/>
+        },
+        {key: 'name', label: 'Name'},
+        {key: 'created_at', label: 'Created At', render: user => formatDate(user.created_at)},
+        {key: 'updated_at', label: 'Updated At', render: user => formatDate(user.updated_at)},
+    ];
 
-            const formattedCreatedAt = isNaN(createdAt.getTime()) ? 'Invalid Date' : format(createdAt, 'yyyy-MM-dd HH:mm:ss');
-            const formattedUpdatedAt = isNaN(updatedAt.getTime()) ? 'Invalid Date' : format(updatedAt, 'yyyy-MM-dd HH:mm:ss');
-
-            // Use default avatar if user.avatar is not available
-            const avatarSrc = user.avatar ? user.avatar : DEFAULT_AVATAR_URL;
-
-            return (
-                <tr
-                    className={`${style['category-row']} ${expandedUserId === user.id ? style['expanded-row'] : ''}`}
-                    onClick={() => handleUserClick(user.id)}
-                    key={index}
-                >
-                    <td>{user.id}</td>
-                    <td>
-                        <img src={avatarSrc} alt={`${user.name}'s avatar`} className={style['avatar']} />
-                    </td>
-                    <td>{user.name}</td>
-                    <td>{formattedCreatedAt}</td>
-                    <td>{formattedUpdatedAt}</td>
-                    <td className={style['action-buttons']}>
-                        <div className={style['button-container']}>
-                            <button className="btn btn-primary" onClick={() => handleEditUser(user.id)}>Edit</button>
-                            <button className="btn btn-danger" onClick={() => handleDeleteUser(user.id)}>Delete</button>
-                        </div>
-                    </td>
-                </tr>
-            );
-        });
-    }, [users, expandedUserId, handleUserClick, handleEditUser, handleDeleteUser]);
+    const renderRowActions = user => (
+        <div>
+            <button style={{border: "none", backgroundColor: 'white'}} onClick={() => handleEditUser(user.id)}>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24"
+                     viewBox="0 0 32 32" width="24">
+                    <g fill="green" >
+                    <path d="m2 26h28v2h-28z"/>
+                    <path
+                        d="m25.4 9c.8-.8.8-2 0-2.8l-3.6-3.6c-.8-.8-2-.8-2.8 0l-15 15v6.4h6.4zm-5-5 3.6 3.6-3 3-3.6-3.6zm-14.4 18v-3.6l10-10 3.6 3.6-10 10z"/>
+                    <path d="m0 0h32v32h-32z" fill="none"/>
+                    </g>
+                </svg>
+            </button>
+            <button style={{border: "none", backgroundColor: 'white'}} onClick={() => handleDeleteUser(user.id)}>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                    <g fill="red">
+                        <path
+                            d="m9.5 0c.27614237 0 .5.22385763.5.5 0 .27614238-.22385763.5-.5.5-.55228475 0-1 .44771525-1 1 0 .27614237-.22385763.5-.5.5s-.5-.22385763-.5-.5c0-1.1045695.8954305-2 2-2z"/>
+                        <path
+                            d="m16.5 2c0 .27614237-.2238576.5-.5.5s-.5-.22385763-.5-.5c0-.55228475-.4477153-1-1-1-.2761424 0-.5-.22385762-.5-.5 0-.27614237.2238576-.5.5-.5 1.1045695 0 2 .8954305 2 2z"/>
+                        <path
+                            d="m4 20c0-.2761424.22385763-.5.5-.5s.5.2238576.5.5c0 .5522847.44771525 1 1 1 .27614237 0 .5.2238576.5.5s-.22385763.5-.5.5c-1.1045695 0-2-.8954305-2-2z"/>
+                        <path
+                            d="m18 22c-.2761424 0-.5-.2238576-.5-.5s.2238576-.5.5-.5c.5522847 0 1-.4477153 1-1 0-.2761424.2238576-.5.5-.5s.5.2238576.5.5c0 1.1045695-.8954305 2-2 2z"/>
+                        <path
+                            d="m2.5 5c-.27614237 0-.5-.22385763-.5-.5s.22385763-.5.5-.5h19.0217289c.2761423 0 .5.22385763.5.5s-.2238577.5-.5.5z"/>
+                        <path
+                            d="m9.5 1c-.27614237 0-.5-.22385762-.5-.5 0-.27614237.22385763-.5.5-.5h5c.2761424 0 .5.22385763.5.5 0 .27614238-.2238576.5-.5.5z"/>
+                        <path
+                            d="m6 22c-.27614237 0-.5-.2238576-.5-.5s.22385763-.5.5-.5h12c.2761424 0 .5.2238576.5.5s-.2238576.5-.5.5z"/>
+                        <path
+                            d="m7.5 2c0-.27614237.22385763-.5.5-.5s.5.22385763.5.5v2.5c0 .27614237-.22385763.5-.5.5s-.5-.22385763-.5-.5z"/>
+                        <path
+                            d="m4 5c0-.27614237.22385763-.5.5-.5s.5.22385763.5.5v15c0 .2761424-.22385763.5-.5.5s-.5-.2238576-.5-.5z"/>
+                        <path
+                            d="m7.5 8c0-.27614237.22385763-.5.5-.5s.5.22385763.5.5v10c0 .2761424-.22385763.5-.5.5s-.5-.2238576-.5-.5z"/>
+                        <path
+                            d="m11.5 8c0-.27614237.2238576-.5.5-.5s.5.22385763.5.5v10c0 .2761424-.2238576.5-.5.5s-.5-.2238576-.5-.5z"/>
+                        <path
+                            d="m15.5 8c0-.27614237.2238576-.5.5-.5s.5.22385763.5.5v10c0 .2761424-.2238576.5-.5.5s-.5-.2238576-.5-.5z"/>
+                        <path
+                            d="m19 5c0-.27614237.2238576-.5.5-.5s.5.22385763.5.5v15c0 .2761424-.2238576.5-.5.5s-.5-.2238576-.5-.5z"/>
+                        <path
+                            d="m15.5 2c0-.27614237.2238576-.5.5-.5s.5.22385763.5.5v2.5c0 .27614237-.2238576.5-.5.5s-.5-.22385763-.5-.5z"/>
+                    </g>
+                </svg>
+            </button>
+        </div>
+    );
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error fetching data: {error.message}</p>;
@@ -111,32 +119,22 @@ const Users = () => {
             <button
                 type="button"
                 className="btn btn-success mb-1 float-end"
-                onClick={() => setShowModal(true)} // Show modal when clicked
+                onClick={() => setShowModal(true)}
             >
                 Add User
             </button>
 
             <CreateUserModal
-                show={showModal} // Pass showModal state
-                handleClose={() => setShowModal(false)} // Handler to close modal
-                handleSave={handleSaveUser} // Handler to save user
+                show={showModal}
+                handleClose={() => setShowModal(false)}
+                handleSave={handleSaveUser}
             />
 
-            <table className={style['main-table']}>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Avatar</th>
-                    <th>Name</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {renderTableRows}
-                </tbody>
-            </table>
+            <Table
+                columns={columns}
+                data={users}
+                renderRowActions={renderRowActions}
+            />
         </>
     );
 };

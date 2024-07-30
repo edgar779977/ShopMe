@@ -8,7 +8,9 @@
         padding: 8px;
     }
 }
-
+td {
+    align-content: center;
+}
 .sub-categories-table {
     width: 100%;
     border-collapse: collapse;
@@ -16,8 +18,8 @@
 
 .category-row {
     cursor: pointer;
-    &:hover {
-        background-color: #f0f0f0;
+    &.expanded-category {
+        background-color: #75b798 !important; // Green style for expanded category
     }
 }
 
@@ -25,11 +27,12 @@
     td {
         padding: 10px; /* Adjust as needed */
         border: 1px solid #ccc;
-        background-color: #76b7758c;
+        background-color: #007bff8a; // Red style for sub-categories
+        color: white;
     }
 }
 
-.button-container{
+.button-container {
     display: flex;
     justify-content: space-between;
 }
