@@ -6,6 +6,7 @@ import { createUser } from "../../store/slices/authSlice";
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import {validateRegistration} from "../mixin/validateRegistration"
 
 function CreateUserModal({ show, handleClose, handleSave }) {
     const modalRef = useRef(null);
@@ -59,27 +60,6 @@ function CreateUserModal({ show, handleClose, handleSave }) {
             };
         }
     }, [handleClose]);
-
-    const validate = (values) => {
-        const errors = {};
-        if (!values.name) {
-            errors.name = 'Name is required';
-        } else if (values.name.length < 6) {
-            errors.name = 'The name must be at least 6 characters.';
-        }
-        if (!values.email) {
-            errors.email = 'Email is required';
-        }
-        if (!values.password) {
-            errors.password = 'Password is required';
-        }
-        if (!values.confirmPassword) {
-            errors.confirmPassword = 'Confirm password is required';
-        } else if (values.password !== values.confirmPassword) {
-            errors.confirmPassword = 'Passwords do not match';
-        }
-        return errors;
-    };
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
@@ -141,7 +121,7 @@ function CreateUserModal({ show, handleClose, handleSave }) {
                         )}
                         <Formik
                             initialValues={{ name: '', email: '', password: '', confirmPassword: '' }}
-                            validate={validate}
+                            validate={validateRegistration}
                             onSubmit={handleSubmit}
                         >
                             {({ handleSubmit, isSubmitting }) => (

@@ -4,57 +4,32 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegistrationRequest;
+use App\Services\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+
+    public function __construct(protected UserService $userServices){}
+
     public function login(LoginRequest $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $token = $user->createToken('authToken')->plainTextToken;
-
-            $isAdmin = $user->roles()->where('name', 'admin')->exists();
-
-            return response()->json([
-                'user' => $user,
-                'token' => $token,
-                'isAdmin' => $isAdmin,
-            ]);
-        }
-
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
-        ]);
+        return $this->userServices->login($request->all());
     }
 
-    public function register(Request $request)
+    public function register(RegistrationRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
 
-        $user = User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']),
-        ]);
+        $user = $this->userServices->createUser($request->all());
+        $token = $user->createToken('authToken')->plainTextToken;
 
-        // Optionally, log the user in after registration
-        // Auth::login($user);
+        return response()->json([
+            'message' => 'User registered successfully',
+            'user' => $user,
+            'token' => $token
 
-        return response()->json(['message' => 'User registered successfully']);
+            ],200);
     }
 
     public function logout(Request $request)
