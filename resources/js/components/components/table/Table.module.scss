@@ -8,10 +8,7 @@
         padding: 8px;
     }
 }
-td {
-    align-content: center;
-    text-align: center;
-}
+
 .sub-categories-table {
     width: 100%;
     border-collapse: collapse;
@@ -19,6 +16,7 @@ td {
 
 .category-row {
     cursor: pointer;
+    align-content: center;
     &.expanded-category {
         background-color: #75b798 !important; // Green style for expanded category
     }
