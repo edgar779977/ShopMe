@@ -1,0 +1,41 @@
+.pagination {
+    display: flex;
+    justify-content: end;
+    margin-top: 20px;
+
+    button {
+        margin: 0 5px;
+        padding: 5px 10px;
+        background-color: #007bff;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 3px;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: #0056b3;
+        }
+
+        &:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    }
+
+    .activePage {
+        background-color: #0056b3;
+    }
+
+    span {
+        margin: 0 5px;
+        padding: 5px 10px;
+        color: #000;
+    }
+}
+.actionButtons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+

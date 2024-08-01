@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Jobs\SendWelcomeEmailJob;
+use App\Models\User;
 use App\Repositories\UserRepository;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
 
 class UserService
 {
@@ -12,39 +13,76 @@ class UserService
     {
     }
 
-    public function getUserUsers()
+    /**
+     * Get users with the 'user' role, with optional search and pagination.
+     *
+     * @param string|null $search
+     * @param int $perPage
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function getUsers(?string $search = null, int $perPage = 10): \Illuminate\Pagination\LengthAwarePaginator
     {
-        return $this->userRepository->getUsersByRole('user', ['admin']);
+        return $this->userRepository->getUsersByRole('user', ['admin'], $search, $perPage);
     }
 
-    public function getAdminUser()
+    /**
+     * Get users with the 'user' role, with optional search and pagination.
+     *
+     * @param string|null $search
+     * @param int $perPage
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function getAdmins(?string $search = null, int $perPage = 10): \Illuminate\Pagination\LengthAwarePaginator
     {
         return $this->userRepository->getUsersByRole('admin', ['user']);
     }
 
+    // Other methods...
 
+    /**
+     * Create a new user and dispatch a welcome email.
+     *
+     * @param array $data
+     * @return User|array
+     */
     public function createUser(array $data)
     {
-        $user = $this->userRepository->createUser($data);
+        $result = $this->userRepository->createUser($data);
 
-        if (isset($user['error'])) {
-            return ['success' => 0, 'message' => $user['error']];
+        if (isset($result['error'])) {
+            return ['error' => $result['error']];
         }
 
-        // Send welcome email
+        $user = $result; // Assume $result is a User model instance
+        // Dispatch welcome email job
         SendWelcomeEmailJob::dispatch($user);
 
         return $user;
     }
 
-    public function uploadProfileImage($userId, $imagePath)
+    /**
+     * Upload a profile image for a user.
+     *
+     * @param int $userId
+     * @param string $imagePath
+     * @return \App\Models\ProfileImage
+     */
+    public function uploadProfileImage(int $userId, string $imagePath): \App\Models\ProfileImage
     {
         return $this->userRepository->uploadProfileImage($userId, $imagePath);
     }
 
-    public function login(array $user)
+    /**
+     * Authenticate a user and return their token.
+     *
+     * @param array $credentials
+     * @return JsonResponse
+     */
+    public function login(array $credentials): JsonResponse
     {
+        $response = $this->userRepository->login($credentials);
 
-        return $this->userRepository->login($user);
+        // Return the JsonResponse directly
+        return $response;
     }
 }

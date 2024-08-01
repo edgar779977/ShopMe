@@ -17,34 +17,16 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Get the search query and pagination parameters
+        $search = $request->input('search');
+        $perPage = $request->input('perPage', 10); // Default to 10 per page
 
-        try {
-            // Retrieve users with the role 'user'
-            $users = $this->userServices->getUserUsers();
+        // Fetch users using the service
+        $users = $this->userServices->getUsers($search, $perPage);
 
-            // Check if the users data is valid
-            if ($users->isEmpty()) {
-                return response()->json([
-                    'success' => 0,
-                    'message' => 'No users found.'
-                ], 404);
-            }
-
-            // Return successful response with users data
-            return response()->json([
-                'success' => 1,
-                'users' => $users
-            ], 200);
-        } catch (\Exception $e) {
-            // Handle any exceptions that occur during the process
-            return response()->json([
-                'success' => 0,
-                'message' => 'An error occurred while fetching users.',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json($users);
     }
 
     /**
