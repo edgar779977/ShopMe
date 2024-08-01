@@ -7,7 +7,7 @@ import AdminRoute from './components/AdminRoute';
 import {AuthProvider} from '../../contexts/AuthContext';
 
 // Lazy-loaded components
-const Users = lazy(() => import('./admin/Users'));
+const Users = lazy(() => import('./admin/user/Users'));
 const ProductTable = lazy(() => import('./admin/Product'));
 const Home = lazy(() => import('./components/Home'));
 const NotFound404 = lazy(() => import('./pages/NotFound'));

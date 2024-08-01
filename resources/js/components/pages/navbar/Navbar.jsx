@@ -1,17 +1,12 @@
 import React, {useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import { registerUser, logoutUser } from '../../../store/slices/authSlice'; // Adjust the path as necessary
+import { logoutUser } from '../../../store/slices/authSlice'; // Adjust the path as necessary
 
 const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate(); // Initialize useNavigate
     const user = useSelector(state => state.auth.user);
-
-    useEffect(()=>{
-        console.log(user,'9999')
-
-    },[user])
 
     const handleLogin = () => {
         navigate('/login', { state: { from: '/home' } });

@@ -1,0 +1,120 @@
+// Users.module.scss
+
+/* General styles */
+.container {
+    padding: 20px;
+}
+
+.loading, .error {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Loading state */
+.loading {
+    color: #007bff; // Adjust color to your preference
+}
+
+/* Error state */
+.error {
+    color: #dc3545; // Adjust color to your preference
+}
+
+/* Table styles */
+.main-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    thead {
+        background-color: #f8f9fa;
+    }
+
+    tbody tr {
+        &:hover {
+            background-color: #f0f0f0;
+        }
+    }
+}
+
+/* Avatar styling */
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+
+/* Action buttons */
+.actionButtons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.actionButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #e9ecef;
+    }
+
+    img {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Search input and button container */
+.searchContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.searchInput {
+    width: 70%;
+}
+
+.addUserButton {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #218838;
+    }
+}
+
+.spinnerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+
+
+
