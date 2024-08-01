@@ -1,21 +1,25 @@
 // src/helpers/helpers.js
 import axios from 'axios';
 
+// Define API endpoints
 const USERS_API_URL = '/api/admin/users';
 const DELETE_USERS_API_URL = '/api/admin/users/';
 const ADMIN_LOGOUT = '/api/logout/';
 
-
 const token = localStorage.getItem('token')
 
-const getAllUsers = async () => {
-
+const getAllUsers = async (search = '', page = 1, perPage = 10) => {
     try {
-        const response = await axios.get(USERS_API_URL,{
+        const response = await axios.get(USERS_API_URL, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization':`Bearer ${token}`
+                'Authorization': `Bearer ${token}`
             },
+            params: {
+                search: search,
+                page: page,
+                perPage: perPage
+            }
         });
         return response.data;
     } catch (error) {

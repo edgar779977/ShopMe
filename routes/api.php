@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Admin routes
     Route::middleware('admin')->prefix('admin')->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+        Route::get('/users/search', [UserController::class, 'search'])->name('admin.users.search');
         Route::get('/users/{id}', [UserController::class, 'show'])->name('admin.users.show');
         Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
         Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
