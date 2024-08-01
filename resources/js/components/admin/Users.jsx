@@ -56,8 +56,8 @@ const Users = () => {
         {
             key: 'avatar',
             label: 'Avatar',
-            render: user => <img src={user.avatar ? user.avatar : defaultImage} alt={`${user.name}'s avatar`}
-                                 style={{width: 50, height: 50, borderRadius: '25px'}}/>
+            render: user => <img  className="img-fluid rounded-circle"  src={user.avatar ? user.avatar : defaultImage} alt={`${user.name}'s avatar`}
+                                 style={{width: 50, height: 50}}/>
         },
         {key: 'name', label: 'Name'},
         {key: 'created_at', label: 'Created At', render: user => formatDate(user.created_at)},
@@ -65,11 +65,11 @@ const Users = () => {
     ];
 
     const renderRowActions = user => (
-        <div style={{display: "flex", justifyContent: 'space-between'}}>
-            <button style={{border: "none", backgroundColor: 'white'}} onClick={() => handleEditUser(user.id)}>
+        <div className="d-flex justify-content-between ">
+            <button className="btn p-0 " onClick={() => handleEditUser(user.id)}>
                 <img src={DeleteIcon} alt="delete"/>
             </button>
-            <button style={{border: "none", backgroundColor: 'white'}} onClick={() => handleDeleteUser(user.id)}>
+            <button className="btn p-0" onClick={() => handleDeleteUser(user.id)}>
                 <img src={EditIcon} alt="edit"/>
             </button>
         </div>
@@ -81,7 +81,7 @@ const Users = () => {
     return (
         <>
             <button
-                style={{position: "fixed", right: '13%', bottom: '90%'}}
+                style={{right: '13%', bottom: '657px'}}
                 type="button"
                 className="btn btn-success mb-1 float-end"
                 onClick={() => setShowModal(true)}

@@ -4,8 +4,8 @@ import style from './Table.module.scss';
 
 const Table = ({ columns, data, renderRowActions = null, expandedCategoryId, handleCategoryClick = null, subCategoriesKey = null }) => {
     return (
-        <table className={`table ${style.table}`}>
-            <thead  style={{textAlign: 'center'}}>
+        <table className={`table table-hover ${style.table}`}>
+            <thead className='text-center'>
             <tr>
                 {columns.map(column => (
                     <th key={column.key}>{column.label}</th>
@@ -13,7 +13,7 @@ const Table = ({ columns, data, renderRowActions = null, expandedCategoryId, han
                 {renderRowActions && <th>Actions</th>}
             </tr>
             </thead>
-            <tbody>
+            <tbody className='text-center'>
             {data.map(row => (
                 <React.Fragment key={row.id}>
                     <tr
