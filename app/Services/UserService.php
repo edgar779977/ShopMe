@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Jobs\SendWelcomeEmailJob;
+use App\Models\User;
 use App\Repositories\UserRepository;
-use Illuminate\Support\Collection;
+use Illuminate\Http\JsonResponse;
 
 class UserService
 {
@@ -36,24 +37,27 @@ class UserService
         return $this->userRepository->getUsersByRole('admin', ['user']);
     }
 
+    // Other methods...
+
     /**
      * Create a new user and dispatch a welcome email.
      *
      * @param array $data
-     * @return array
+     * @return User|array
      */
-    public function createUser(array $data): array
+    public function createUser(array $data)
     {
-        $user = $this->userRepository->createUser($data);
+        $result = $this->userRepository->createUser($data);
 
-        if (isset($user['error'])) {
-            return ['success' => false, 'message' => $user['error']];
+        if (isset($result['error'])) {
+            return ['error' => $result['error']];
         }
 
+        $user = $result; // Assume $result is a User model instance
         // Dispatch welcome email job
         SendWelcomeEmailJob::dispatch($user);
 
-        return ['success' => true, 'user' => $user];
+        return $user;
     }
 
     /**
@@ -72,25 +76,13 @@ class UserService
      * Authenticate a user and return their token.
      *
      * @param array $credentials
-     * @return array
+     * @return JsonResponse
      */
-    public function login(array $credentials): array
+    public function login(array $credentials): JsonResponse
     {
         $response = $this->userRepository->login($credentials);
 
-        // Adjust response structure if necessary
-        if ($response->status() === 200) {
-            return [
-                'success' => true,
-                'user' => $response->json('user'),
-                'token' => $response->json('token'),
-                'isAdmin' => $response->json('isAdmin'),
-            ];
-        }
-
-        return [
-            'success' => false,
-            'message' => $response->json('message'),
-        ];
+        // Return the JsonResponse directly
+        return $response;
     }
 }
