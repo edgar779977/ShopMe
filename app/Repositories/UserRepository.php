@@ -6,7 +6,6 @@ use App\Interfaces\UserRepositoryInterface;
 use App\Models\ProfileImage;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
