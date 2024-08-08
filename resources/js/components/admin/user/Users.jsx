@@ -9,7 +9,7 @@ import Pagination from '../../components/Pagination/Pagination';
 import style from './Users.module.scss';
 import debounce from 'lodash.debounce';
 import { UserHelper } from '../../../../helpers/UserHelper';
-import { ClipLoader } from 'react-spinners'; // Import the spinner component
+import { ClipLoader } from 'react-spinners';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
