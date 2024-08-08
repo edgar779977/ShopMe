@@ -2,7 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import style from './Table.module.scss';
 
-const Table = ({ columns, data, renderRowActions = null, expandedCategoryId, handleCategoryClick = null, subCategoriesKey = null }) => {
+const Table = ({
+                   columns,
+                   data,
+                   renderRowActions = null,
+                   expandedCategoryId,
+                   handleCategoryClick = null,
+                   subCategoriesKey = null,
+                   openModal = null
+               }) => {
     return (
         <table className={`table table-hover ${style.table}`}>
             <thead className='text-center'>
@@ -21,7 +29,8 @@ const Table = ({ columns, data, renderRowActions = null, expandedCategoryId, han
                         onClick={() => handleCategoryClick(row.id)}
                     >
                         {columns.map(column => (
-                            <td className={`${style['category-row']} ${expandedCategoryId === row.id ? style['expanded-category'] : ''}`} key={column.key}>
+                            <td className={`${style['category-row']} ${expandedCategoryId === row.id ? style['expanded-category'] : ''}`}
+                                key={column.key}>
                                 {column.render ? column.render(row) : row[column.key]}
                             </td>
                         ))}
@@ -43,15 +52,26 @@ const Table = ({ columns, data, renderRowActions = null, expandedCategoryId, han
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {row[subCategoriesKey].map(subRow => (
+                                    {row[subCategoriesKey].map((subRow, index) => (
                                         <tr key={subRow.id} className={style['expanded-sub-category']}>
                                             {columns.map(column => (
                                                 <td key={column.key}>
                                                     {column.render ? column.render(subRow) : subRow[column.key]}
                                                 </td>
                                             ))}
+
                                         </tr>
                                     ))}
+                                    <tr>
+                                        <td rowSpan={row[subCategoriesKey].length} style={{height: '100px'}}>
+                                            <button
+                                                className="p-2 text-white bg-success pe-auto btn btn-link text-decoration-none"
+                                                onClick={openModal}
+                                            >
+                                                Add Sub categories
+                                            </button>
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </td>
